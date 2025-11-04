@@ -1,0 +1,44 @@
+name: First Workflow individual jobs
+on: push
+jobs: 
+    lint: 
+      runs-on: ubuntu-latest
+      steps: 
+          - name: Checkout code
+            uses: actions/checkout@v2
+          - name: Install dependencies
+            run: npm ci
+            working-directory: practice-project-4
+          - name: Lint code
+            run: npm run lint
+    test:
+      needs: lint
+      runs-on: ubuntu-latest
+      steps: 
+          - name: Checkout code
+            uses: actions/checkout@v2
+          - name: Install dependencies
+            run: npm ci
+            working-directory: practice-project-4
+          - name: Test code
+            run: npm test
+            working-directory: practice-project-4
+    build:
+      needs: test
+      runs-on: ubuntu-latest
+      steps: 
+          - name: Checkout code
+            uses: actions/checkout@v2
+          - name: Install dependencies
+            run: npm ci
+            working-directory: practice-project-4
+          - name: Build code
+            run: npm run build
+            working-directory: practice-project-4
+    deploy:
+      needs: build
+      runs-on: ubuntu-latest
+      steps: 
+            - name: Deploy to Server
+              run: echo "Deploying to server"
+    
